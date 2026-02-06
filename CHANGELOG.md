@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.1.6 - 2026-02-06
+
+### Added
+- Recommendation-grade entity context model and builder in `/Users/leoguinan/MetaSPN/metaspn-entities/metaspn_entities/context.py`:
+  - `RecommendationContext`
+  - `build_recommendation_context(...)`
+- Resolver API for recommendation workers:
+  - `EntityResolver.recommendation_context(entity_id)`
+- Tests for merged continuity, cross-source consistency, and rerun determinism:
+  - `/Users/leoguinan/MetaSPN/metaspn-entities/tests/test_recommendation_context.py`
+
+### Changed
+- Public exports now include `RecommendationContext` and `build_recommendation_context`.
+- Recommendation outputs are canonical redirect-safe and deterministic.
+
 ## 0.1.5 - 2026-02-06
 
 ### Added

@@ -1,5 +1,5 @@
 from .adapter import SignalResolutionResult, resolve_normalized_social_signal
-from .context import EntityContext, build_confidence_summary
+from .context import RecommendationContext, EntityContext, build_confidence_summary, build_recommendation_context
 from .events import EmittedEvent
 from .models import EntityResolution
 from .resolver import EntityResolver
@@ -9,7 +9,9 @@ __all__ = [
     "resolve_normalized_social_signal",
     "SignalResolutionResult",
     "EntityContext",
+    "RecommendationContext",
     "build_confidence_summary",
+    "build_recommendation_context",
     "EntityResolver",
     "EntityResolution",
     "EmittedEvent",

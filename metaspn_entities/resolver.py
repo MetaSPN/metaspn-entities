@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-from .context import EntityContext, build_confidence_summary
+from .context import RecommendationContext, EntityContext, build_confidence_summary, build_recommendation_context
 from .events import EmittedEvent, EventFactory
 from .models import (
     DEFAULT_MATCH_CONFIDENCE,
@@ -159,6 +159,12 @@ class EntityResolver:
             recent_evidence=recent_evidence,
             confidence_summary=summary,
         )
+
+    def recommendation_context(self, entity_id: str) -> RecommendationContext:
+        canonical_id = self.store.canonical_entity_id(entity_id)
+        aliases = self.store.list_aliases_for_entity(canonical_id)
+        identifiers = self.store.list_identifier_records_for_entity(canonical_id)
+        return build_recommendation_context(canonical_id, aliases, identifiers)
 
     def export_snapshot(self, output_path: str) -> None:
         self.store.export_snapshot(output_path)

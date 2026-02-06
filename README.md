@@ -83,3 +83,17 @@ Profiler/router workers can read consolidated context using:
 - `resolver.confidence_summary(entity_id)`
 
 Both APIs resolve canonical redirects first, so merged IDs return coherent context.
+
+## M2 Recommendation Context API
+
+Recommendation and drafter workers can consume:
+
+- `resolver.recommendation_context(entity_id)`
+
+The recommendation context includes:
+- identity confidence
+- activity recency (days)
+- interaction history summary (evidence count + source distribution)
+- preferred channel hint
+- relationship stage hint (`cold` / `warm` / `engaged`)
+- merge-safe continuity fields keyed to canonical entity IDs

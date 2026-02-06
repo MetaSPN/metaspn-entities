@@ -276,3 +276,37 @@ class SQLiteEntityStore:
                     "normalized_value": row["normalized_value"],
                     "confidence": row["confidence"],
                 }
+
+    def list_identifier_records_for_entity(self, entity_id: str) -> List[Dict[str, Any]]:
+        target = self.canonical_entity_id(entity_id)
+        rows = self.conn.execute(
+            """
+            SELECT
+              a.entity_id,
+              i.identifier_type,
+              i.value,
+              i.normalized_value,
+              i.confidence,
+              i.first_seen_at,
+              i.last_seen_at,
+              i.provenance
+            FROM aliases a
+            JOIN identifiers i
+              ON a.identifier_type = i.identifier_type
+             AND a.normalized_value = i.normalized_value
+            ORDER BY i.identifier_type, i.normalized_value
+            """
+        ).fetchall()
+        return [
+            {
+                "identifier_type": row["identifier_type"],
+                "value": row["value"],
+                "normalized_value": row["normalized_value"],
+                "confidence": row["confidence"],
+                "first_seen_at": row["first_seen_at"],
+                "last_seen_at": row["last_seen_at"],
+                "provenance": row["provenance"],
+            }
+            for row in rows
+            if self.canonical_entity_id(row["entity_id"]) == target
+        ]

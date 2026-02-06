@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.1.5 - 2026-02-06
+
+### Added
+- M1 entity context API for routing/profiling:
+  - `EntityResolver.entity_context(entity_id, recent_limit=10)`
+  - `EntityResolver.confidence_summary(entity_id)`
+- New context model + deterministic rollup helper in `metaspn_entities.context`:
+  - `EntityContext`
+  - `build_confidence_summary(...)`
+- Context-focused tests for cross-platform flows, merged continuity, and rerun stability in `tests/test_context.py`.
+
+### Changed
+- SQLite backend now exposes canonical identifier records with provenance and seen timestamps for context assembly.
+- Public exports include `EntityContext` and `build_confidence_summary`.
+
 ## 0.1.4 - 2026-02-06
 
 ### Added

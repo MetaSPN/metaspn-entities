@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
+from .context import EntityContext, build_confidence_summary
 from .events import EmittedEvent, EventFactory
 from .models import (
     DEFAULT_MATCH_CONFIDENCE,
@@ -134,6 +135,30 @@ class EntityResolver:
 
     def aliases_for_entity(self, entity_id: str) -> List[Dict[str, Any]]:
         return self.store.list_aliases_for_entity(entity_id)
+
+    def confidence_summary(self, entity_id: str) -> Dict[str, Any]:
+        canonical_id = self.store.canonical_entity_id(entity_id)
+        aliases = self.store.list_aliases_for_entity(canonical_id)
+        identifiers = self.store.list_identifier_records_for_entity(canonical_id)
+        return build_confidence_summary(aliases, identifiers, identifiers)
+
+    def entity_context(self, entity_id: str, recent_limit: int = 10) -> EntityContext:
+        canonical_id = self.store.canonical_entity_id(entity_id)
+        aliases = self.store.list_aliases_for_entity(canonical_id)
+        identifiers = self.store.list_identifier_records_for_entity(canonical_id)
+        recent_evidence = sorted(
+            identifiers,
+            key=lambda row: (str(row["last_seen_at"]), str(row["identifier_type"]), str(row["normalized_value"])),
+            reverse=True,
+        )[: max(recent_limit, 0)]
+        summary = build_confidence_summary(aliases, identifiers, recent_evidence)
+        return EntityContext(
+            entity_id=canonical_id,
+            aliases=aliases,
+            identifiers=identifiers,
+            recent_evidence=recent_evidence,
+            confidence_summary=summary,
+        )
 
     def export_snapshot(self, output_path: str) -> None:
         self.store.export_snapshot(output_path)

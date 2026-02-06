@@ -74,3 +74,12 @@ Adapter behavior:
 - Extracts deterministic identifier candidates from normalized payloads.
 - Resolves a primary identifier, then adds remaining identifiers as aliases.
 - Returns only events produced during the adapter call.
+
+## M1 Context API
+
+Profiler/router workers can read consolidated context using:
+
+- `resolver.entity_context(entity_id, recent_limit=10)`
+- `resolver.confidence_summary(entity_id)`
+
+Both APIs resolve canonical redirects first, so merged IDs return coherent context.

@@ -7,7 +7,17 @@ def normalize_identifier(identifier_type: str, value: str) -> str:
     identifier_type = identifier_type.strip().lower()
     value = value.strip()
 
-    if identifier_type in {"twitter_handle", "github_handle", "handle"}:
+    if identifier_type in {
+        "twitter_handle",
+        "x_handle",
+        "linkedin_handle",
+        "github_handle",
+        "instagram_handle",
+        "tiktok_handle",
+        "bluesky_handle",
+        "youtube_handle",
+        "handle",
+    }:
         return value.lstrip("@").lower()
 
     if identifier_type == "email":

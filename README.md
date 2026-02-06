@@ -110,3 +110,16 @@ Attribution guarantees:
 - canonical merge redirects are resolved before returning `entity_id`
 - output includes explicit confidence for downstream learning logic
 - deterministic tie-breaks are applied by score, then hit count, then entity ID
+
+## Demo Pipeline Invocation
+
+For demo digest identity resolution (without direct DB queries in renderer), use:
+
+- `resolve_demo_social_identity(resolver, social_payload)`
+
+Returned payload includes:
+- `entity_id`
+- `confidence`
+- `matched_identifiers`
+- `why` metadata (confidence summary, counts, relationship hint)
+- emitted event payloads for auditability

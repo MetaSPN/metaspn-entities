@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.8 - 2026-02-06
+
+### Added
+- Demo-focused helper in `/Users/leoguinan/MetaSPN/metaspn-entities/metaspn_entities/demo.py`:
+  - `resolve_demo_social_identity(resolver, social_payload)`
+- Digest-ready explainability payload fields:
+  - confidence
+  - matched identifiers
+  - `why` section with confidence rollup and relationship hint
+- Demo stability tests in `/Users/leoguinan/MetaSPN/metaspn-entities/tests/test_demo_support.py` for:
+  - repeated-day stable resolution
+  - alias collision continuity
+  - explainability payload structure
+
+### Changed
+- Normalization coverage now includes additional demo platform handle types (e.g. `x_handle`, `linkedin_handle`, `bluesky_handle`).
+- Public exports now include `resolve_demo_social_identity`.
+
 ## 0.1.7 - 2026-02-06
 
 ### Added

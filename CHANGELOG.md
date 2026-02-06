@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.1.9 - 2026-02-06
+
+### Added
+- Token/project/creator linkage helpers in `/Users/leoguinan/MetaSPN/metaspn-entities/metaspn_entities/token_links.py`:
+  - `resolve_token_entity`
+  - `link_token_to_project`
+  - `link_creator_wallet`
+  - `link_token_project_creator`
+  - `attribute_token_outcome`
+- Token linkage tests in `/Users/leoguinan/MetaSPN/metaspn-entities/tests/test_token_links.py`:
+  - deterministic contract resolution
+  - multiple tokens to one project entity mapping
+  - merge-safe historical attribution
+  - creator wallet stability
+
+### Changed
+- Normalization coverage expanded for `token_contract`, `wallet_address`, and `creator_wallet`.
+- Public exports now include token link helpers and `TokenProjectCreatorLinks`.
+
 ## 0.1.8 - 2026-02-06
 
 ### Added

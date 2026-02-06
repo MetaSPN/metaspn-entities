@@ -123,3 +123,15 @@ Returned payload includes:
 - `matched_identifiers`
 - `why` metadata (confidence summary, counts, relationship hint)
 - emitted event payloads for auditability
+
+## Token/Project/Creator Linking
+
+Token workflows can build canonical links using:
+
+- `resolve_token_entity(...)`
+- `link_token_to_project(...)`
+- `link_creator_wallet(...)`
+- `attribute_token_outcome(...)`
+
+These helpers are merge-safe and return canonical entity IDs suitable for downstream
+ops workers and learning attribution.

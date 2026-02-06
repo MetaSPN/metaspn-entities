@@ -6,12 +6,26 @@ from .events import EmittedEvent
 from .models import EntityResolution
 from .resolver import EntityResolver
 from .sqlite_backend import SQLiteEntityStore
+from .token_links import (
+    TokenProjectCreatorLinks,
+    attribute_token_outcome,
+    link_creator_wallet,
+    link_token_project_creator,
+    link_token_to_project,
+    resolve_token_entity,
+)
 
 __all__ = [
     "resolve_normalized_social_signal",
     "SignalResolutionResult",
     "OutcomeAttribution",
     "resolve_demo_social_identity",
+    "TokenProjectCreatorLinks",
+    "resolve_token_entity",
+    "link_token_to_project",
+    "link_creator_wallet",
+    "link_token_project_creator",
+    "attribute_token_outcome",
     "EntityContext",
     "RecommendationContext",
     "build_confidence_summary",

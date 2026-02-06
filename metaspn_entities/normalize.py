@@ -23,6 +23,16 @@ def normalize_identifier(identifier_type: str, value: str) -> str:
     if identifier_type == "email":
         return value.lower()
 
+    if identifier_type in {"wallet_address", "creator_wallet"}:
+        return value.lower()
+
+    if identifier_type == "token_contract":
+        text = value.lower()
+        if ":" in text:
+            chain, contract = text.split(":", 1)
+            return f"{chain.strip()}:{contract.strip()}"
+        return text.strip()
+
     if identifier_type == "domain":
         cleaned = value.lower()
         if cleaned.startswith("http://") or cleaned.startswith("https://"):

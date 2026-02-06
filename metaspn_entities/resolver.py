@@ -39,12 +39,11 @@ class EntityResolver:
                 created_new_entity=False,
                 matched_identifiers=matched_identifiers,
             )
-            self._event_buffer.append(
-                EventFactory.entity_resolved(entity_id, identifier_type, value, resolution.confidence, False)
-            )
+            self._event_buffer.append(EventFactory.entity_resolved(entity_id, caused_by, resolution.confidence))
             return resolution
 
         entity_id = self.store.create_entity(entity_type)
+        created_entity_id = entity_id
         added, conflicting_entity_id = self.store.add_alias(
             identifier_type=identifier_type,
             normalized_value=normalized,
@@ -58,9 +57,7 @@ class EntityResolver:
             merge_reason = f"auto-merge on {identifier_type}:{normalized}"
             self.store.merge_entities(entity_id, conflicting_entity_id, merge_reason, "auto-merge")
             entity_id = self.store.canonical_entity_id(conflicting_entity_id)
-            self._event_buffer.append(
-                EventFactory.entity_merged(entity_id, conflicting_entity_id, merge_reason, "auto-merge")
-            )
+            self._event_buffer.append(EventFactory.entity_merged(entity_id, (created_entity_id,), merge_reason))
 
         matched_identifiers = list(self.store.iter_identifiers_for_entity(entity_id))
         resolution = EntityResolution(
@@ -70,10 +67,8 @@ class EntityResolver:
             matched_identifiers=matched_identifiers,
         )
         if added:
-            self._event_buffer.append(EventFactory.entity_alias_added(entity_id, identifier_type, normalized, caused_by))
-        self._event_buffer.append(
-            EventFactory.entity_resolved(entity_id, identifier_type, value, resolution.confidence, True)
-        )
+            self._event_buffer.append(EventFactory.entity_alias_added(entity_id, normalized, identifier_type))
+        self._event_buffer.append(EventFactory.entity_resolved(entity_id, caused_by, resolution.confidence))
         return resolution
 
     def add_alias(
@@ -102,7 +97,7 @@ class EntityResolver:
             if identifier_type in AUTO_MERGE_IDENTIFIER_TYPES:
                 reason = f"auto-merge on {identifier_type}:{normalized}"
                 self.store.merge_entities(canonical_entity_id, conflicting_entity_id, reason, "auto-merge")
-                event = EventFactory.entity_merged(canonical_entity_id, conflicting_entity_id, reason, "auto-merge")
+                event = EventFactory.entity_merged(conflicting_entity_id, (canonical_entity_id,), reason)
                 self._event_buffer.append(event)
                 return [event]
             raise ValueError(
@@ -112,7 +107,7 @@ class EntityResolver:
         if not added:
             return []
 
-        event = EventFactory.entity_alias_added(canonical_entity_id, identifier_type, normalized, caused_by)
+        event = EventFactory.entity_alias_added(canonical_entity_id, normalized, identifier_type)
         self._event_buffer.append(event)
         return [event]
 
@@ -120,7 +115,7 @@ class EntityResolver:
         self.store.ensure_entity(from_entity_id)
         self.store.ensure_entity(to_entity_id)
         self.store.merge_entities(from_entity_id, to_entity_id, reason, caused_by)
-        event = EventFactory.entity_merged(from_entity_id, to_entity_id, reason, caused_by)
+        event = EventFactory.entity_merged(self.store.canonical_entity_id(to_entity_id), (from_entity_id,), reason)
         self._event_buffer.append(event)
         return event
 
@@ -130,7 +125,7 @@ class EntityResolver:
             self.store.remove_redirect(from_entity_id)
             self.store.set_entity_status(from_entity_id, EntityStatus.ACTIVE)
         self.store.merge_entities(to_entity_id, from_entity_id, reason, caused_by)
-        event = EventFactory.entity_merged(to_entity_id, from_entity_id, reason, caused_by)
+        event = EventFactory.entity_merged(self.store.canonical_entity_id(from_entity_id), (to_entity_id,), reason)
         self._event_buffer.append(event)
         return event
 

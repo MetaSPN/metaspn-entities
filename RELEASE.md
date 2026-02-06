@@ -3,8 +3,8 @@
 ## 1) First-time setup
 
 - Create the package on PyPI: `metaspn-entities`.
-- In PyPI project settings, configure Trusted Publishers for your GitHub repo and the `release` workflow.
-- In GitHub, configure the `pypi` environment used by `.github/workflows/release.yml`.
+- In PyPI project settings, configure Trusted Publishers for your GitHub repo and the `publish` workflow.
+- In GitHub, configure the `pypi` environment used by `.github/workflows/publish.yml`.
 
 ## 2) Local validation
 
@@ -33,7 +33,7 @@ git tag v0.1.0
 git push origin v0.1.0
 ```
 
-Pushing the tag triggers `.github/workflows/release.yml` and publishes to PyPI via trusted publishing.
+Pushing the tag triggers `.github/workflows/publish.yml` and publishes to PyPI via trusted publishing.
 
 ## 5) Optional manual upload (token fallback)
 

@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.1.4 - 2026-02-06
+
+### Added
+- M0 resolver pipeline adapter API in `metaspn_entities.adapter`:
+  - `resolve_normalized_social_signal(resolver, signal_envelope, ...)`
+  - `SignalResolutionResult` with `entity_id`, `confidence`, and emitted events.
+- Adapter tests in `tests/test_adapter.py` for:
+  - same author over multiple posts
+  - cross-platform identifier normalization
+  - idempotent rerun behavior
+  - `metaspn-schemas` parseability of emitted events
+- README worker/runtime invocation guidance for the M0 adapter.
+
+### Changed
+- Public package exports now include M0 adapter symbols in `metaspn_entities.__init__`.
+- Package version bumped to `0.1.4`.
+
 ## 0.1.3 - 2026-02-06
 
 ### Added

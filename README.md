@@ -44,3 +44,33 @@ schema-compatible with `metaspn-schemas` entity events.
   - `entity_id`, `alias`, `alias_type`, `added_at`, `schema_version`
 
 Datetime fields are emitted as UTC ISO-8601 strings for deterministic serialization.
+
+## M0 Ingestion Adapter
+
+For worker/runtime integration, use `resolve_normalized_social_signal(...)` with a
+normalized signal envelope.
+
+```python
+from metaspn_entities import EntityResolver, resolve_normalized_social_signal
+
+resolver = EntityResolver()
+signal = {
+    "source": "social.ingest",
+    "payload_type": "SocialPostSeen",
+    "payload": {
+        "platform": "twitter",
+        "author_handle": "@some_handle",
+        "profile_url": "https://example.com/profiles/some-handle",
+    },
+}
+
+result = resolve_normalized_social_signal(resolver, signal)
+print(result.entity_id, result.confidence)
+for event in result.emitted_events:
+    print(event.event_type, event.payload)
+```
+
+Adapter behavior:
+- Extracts deterministic identifier candidates from normalized payloads.
+- Resolves a primary identifier, then adds remaining identifiers as aliases.
+- Returns only events produced during the adapter call.

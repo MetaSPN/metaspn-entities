@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
+from .attribution import OutcomeAttribution, normalize_outcome_references, normalize_reference, rank_entity_candidates
 from .context import RecommendationContext, EntityContext, build_confidence_summary, build_recommendation_context
 from .events import EmittedEvent, EventFactory
 from .models import (
@@ -165,6 +166,34 @@ class EntityResolver:
         aliases = self.store.list_aliases_for_entity(canonical_id)
         identifiers = self.store.list_identifier_records_for_entity(canonical_id)
         return build_recommendation_context(canonical_id, aliases, identifiers)
+
+    def attribute_outcome(self, references: Any) -> OutcomeAttribution:
+        refs = normalize_outcome_references(references)
+
+        def _resolve_ref(identifier_type: str, value: str) -> Dict[str, Any]:
+            raw_type, normalized = normalize_reference(identifier_type, value)
+            if raw_type == "entity_id":
+                entity = self.store.get_entity(normalized)
+                if not entity:
+                    return {"entity_id": None, "confidence": 0.0, "normalized_value": normalized}
+                return {
+                    "entity_id": self.store.canonical_entity_id(str(entity["entity_id"])),
+                    "confidence": 0.99,
+                    "normalized_value": normalized,
+                }
+
+            alias = self.store.find_alias(raw_type, normalized)
+            if not alias:
+                return {"entity_id": None, "confidence": 0.0, "normalized_value": normalized}
+
+            canonical = self.store.canonical_entity_id(str(alias["entity_id"]))
+            identifier = self.store.get_identifier(raw_type, normalized)
+            alias_conf = float(alias["confidence"])
+            identifier_conf = float(identifier["confidence"]) if identifier else 0.0
+            confidence = round(max(alias_conf, identifier_conf), 6)
+            return {"entity_id": canonical, "confidence": confidence, "normalized_value": normalized}
+
+        return rank_entity_candidates(refs, _resolve_ref)
 
     def export_snapshot(self, output_path: str) -> None:
         self.store.export_snapshot(output_path)

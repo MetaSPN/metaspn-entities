@@ -97,3 +97,16 @@ The recommendation context includes:
 - preferred channel hint
 - relationship stage hint (`cold` / `warm` / `engaged`)
 - merge-safe continuity fields keyed to canonical entity IDs
+
+## M3 Outcome Attribution API
+
+Outcome evaluators can map attempt/outcome references back to canonical entity lineage:
+
+- `resolver.attribute_outcome(references)`
+
+Supported references include `entity_id`, `email`, `canonical_url`, handles, domains, and names.
+
+Attribution guarantees:
+- canonical merge redirects are resolved before returning `entity_id`
+- output includes explicit confidence for downstream learning logic
+- deterministic tie-breaks are applied by score, then hit count, then entity ID

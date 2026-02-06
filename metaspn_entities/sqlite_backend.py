@@ -103,6 +103,12 @@ class SQLiteEntityStore:
             (identifier_type, normalized_value),
         ).fetchone()
 
+    def get_identifier(self, identifier_type: str, normalized_value: str) -> Optional[sqlite3.Row]:
+        return self.conn.execute(
+            "SELECT * FROM identifiers WHERE identifier_type = ? AND normalized_value = ?",
+            (identifier_type, normalized_value),
+        ).fetchone()
+
     def upsert_identifier(
         self,
         identifier_type: str,

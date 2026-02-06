@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.1.7 - 2026-02-06
+
+### Added
+- Outcome attribution model and helpers in `/Users/leoguinan/MetaSPN/metaspn-entities/metaspn_entities/attribution.py`:
+  - `OutcomeAttribution`
+  - reference normalization + confidence-weighted candidate ranking
+- Resolver API: `EntityResolver.attribute_outcome(references)` in `/Users/leoguinan/MetaSPN/metaspn-entities/metaspn_entities/resolver.py`
+- Attribution tests in `/Users/leoguinan/MetaSPN/metaspn-entities/tests/test_attribution.py` covering:
+  - merge after attempt, before outcome
+  - undo-merge edge case
+  - conflicting references with confidence tie-breaks
+
+### Changed
+- SQLite backend adds direct identifier lookup support for attribution scoring.
+- Public exports now include `OutcomeAttribution`.
+
 ## 0.1.6 - 2026-02-06
 
 ### Added

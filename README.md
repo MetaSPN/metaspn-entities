@@ -135,3 +135,16 @@ Token workflows can build canonical links using:
 
 These helpers are merge-safe and return canonical entity IDs suitable for downstream
 ops workers and learning attribution.
+
+## Season 1 Wallet + Reward Helpers
+
+Season 1 identity/attribution flows can use:
+
+- `resolve_player_wallet(...)`
+- `resolve_founder_wallet(...)`
+- `attribute_season_reward(...)`
+- `player_confidence_summary(...)`
+- `canonical_lineage_snapshot(...)`
+
+These helpers are deterministic across alias/merge/undo flows and return canonical,
+redirect-safe read models for UI and analytics consumers.

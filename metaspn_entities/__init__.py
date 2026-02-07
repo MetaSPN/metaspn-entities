@@ -5,6 +5,13 @@ from .demo import resolve_demo_social_identity
 from .events import EmittedEvent
 from .models import EntityResolution
 from .resolver import EntityResolver
+from .season1 import (
+    attribute_season_reward,
+    canonical_lineage_snapshot,
+    player_confidence_summary,
+    resolve_founder_wallet,
+    resolve_player_wallet,
+)
 from .sqlite_backend import SQLiteEntityStore
 from .token_links import (
     TokenProjectCreatorLinks,
@@ -33,5 +40,10 @@ __all__ = [
     "EntityResolver",
     "EntityResolution",
     "EmittedEvent",
+    "resolve_player_wallet",
+    "resolve_founder_wallet",
+    "attribute_season_reward",
+    "player_confidence_summary",
+    "canonical_lineage_snapshot",
     "SQLiteEntityStore",
 ]

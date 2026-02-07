@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.1.10 - 2026-02-07
+
+### Added
+- Season 1 helper module in `/Users/leoguinan/MetaSPN/metaspn-entities/metaspn_entities/season1.py`:
+  - `resolve_player_wallet`
+  - `resolve_founder_wallet`
+  - `attribute_season_reward`
+  - `player_confidence_summary`
+  - `canonical_lineage_snapshot`
+- Season 1 deterministic/merge-safe tests in `/Users/leoguinan/MetaSPN/metaspn-entities/tests/test_season1.py` for:
+  - wallet resolution determinism
+  - alias/merge/undo continuity
+  - reward attribution stability across merge redirects
+  - canonical confidence/lineage read models
+
+### Changed
+- Normalization support expanded for Season 1 wallet identifiers:
+  - `player_wallet`
+  - `founder_wallet`
+- Public exports now include all Season 1 helpers.
+
 ## 0.1.9 - 2026-02-06
 
 ### Added
